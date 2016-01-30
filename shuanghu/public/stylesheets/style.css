@@ -1,0 +1,38 @@
+body {
+  padding: 50px;
+  font: 14px "Microsoft Yahei","Lucida Grande", Helvetica, Arial, sans-serif;
+  padding-bottom: 0px;
+}
+
+a {
+  color: #00B7FF;
+}
+.contactBar{
+  padding:5px 20px;
+}
+.bottom-info::before{
+  content:'';
+  display:block;
+  background-color: #3e3e3e;
+  position:absolute;
+  top:0;
+  left:0;
+  width:50px;
+  height: 100%;
+}
+.bottom-info{
+  padding-left: 100px;
+  background:#eee;
+  position:relative;
+}
+
+.bottom-link{
+  text-decoration: none;
+  font-size: 12px;
+}
+.contactBar{
+  font-size: 12px;
+}
+.contactBar h4{
+  font-size: 14px;
+}

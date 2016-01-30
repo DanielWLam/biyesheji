@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <% include includes/head.ejs %>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+          <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#header-navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+            <a href="#" class="navbar-brand">双虎家私</a>
+          </div>
+          <div class="collapse navbar-collapse" id="header-navbar">
+            <ul class="nav navbar-nav">
+              <li class="active">
+                <a href="#">首页</a>
+              </li>
+              <li><a href="#">新产品</a></li>
+              <li><a href="#">卧室</a></li>
+              <li><a href="#">客厅</a></li>
+              <li><a href="#">厨房</a></li>
+              <li><a href="#">餐厅</a></li>
+              <li><a href="#">儿童部</a></li>
+              <li><a href="#">纺织品</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right" role="loginout">
+                <li><a href="#" class="navbar-link" data-toggle="modal" data-target="#signinModal">登录</a></li>
+                <span>&nbsp;|&nbsp;</span>
+                <li><a href="#" class="navbar-link" data-toggle="modal" data-target="#signupModal">注册</a></li>
+            </ul>
+            <form class="navbar-form navbar-right" role="search">
+              <div class="form-group">
+                <input type="text" class="form-control" placeholder="搜索">
+              </div>
+              <button class="btn btn-default" type="submit">搜索</button>
+            </form>
+          </div>
+        </div>
+    </nav>
+    <div id="signupModal" class="modal fade">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <form>
+            <div class="modal-header">注册</div>
+            <div class="modal-body">
+              <div class="from-group">
+                <label for="signupName">用户名</label>
+                <input type="text" id="signupName" class="form-control" name="user[name]" autocomplete="off">
+              </div>
+              <div class="from-group">
+                <label for="signupPassword">密码</label>
+                <input type="password" id="signupPassword" class="form-control" name="user[password]" autocomplete="off" maxlength="10" placeholder="请输入3-10位密码">
+              </div>
+              <div class="from-group">
+                <label for="signupPasswordAgain">再次输入密码</label>
+                <input type="password" id="signupPasswordAgain" class="form-control" name="user[passwordAgain]" autocomplete="off" maxlength="10" placeholder="请重复输入密码">
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button class="btn btn-default" type="button" data-dismiss="modal">关闭</button>
+              <button class="btn btn-success" type="button" id="regBtn">注册</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div id="signinModal" class="modal fade">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <form>
+            <div class="modal-header">登录</div>
+            <div class="modal-body">
+              <div class="from-group">
+                <label for="signinName">用户名</label>
+                <input type="text" id="signinName" class="form-control" name="user[name]" autocomplete="off">
+              </div>
+              <div class="from-group">
+                <label for="signinPassword">密码</label>
+                <input type="password" id="signinPassword" class="form-control" name="user[password]" autocomplete="off">
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button class="btn btn-default" type="button" data-dismiss="modal">关闭</button>
+              <button class="btn btn-primary" type="submit" id="loginBtn">登录</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  
