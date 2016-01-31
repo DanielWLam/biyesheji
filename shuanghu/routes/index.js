@@ -95,4 +95,12 @@ router.get('/logout',function(req,res,next){
     req.app.locals.user=null;
     res.redirect('/');
 });
+
+//bedroom
+router.get('/bedroom', function(req, res, next) {    
+    res.render('page/bedroom', {
+        title: 'Bedroom'
+    });
+});
+
 module.exports = router;
