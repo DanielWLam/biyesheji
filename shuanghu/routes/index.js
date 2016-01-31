@@ -3,8 +3,21 @@ var router = express.Router();
 var _=require('underscore');
 var User=require('../models/user');
 
+//pre handle user
+router.use(function(req,res,next){
+    var _user=req.session.user;
+    if(_user){
+        //I am not sure about which usage is correct below
+        //1.
+        req.app.locals.user=_user;
+        //2.
+        // res.locals.user=_user;
+    }
+    return next();
+})
+
 /* GET home page. */
-router.get('/', function(req, res, next) {
+router.get('/', function(req, res, next) {    
     res.render('page/index', {
         title: '首页',
         photoList:[{
@@ -67,7 +80,8 @@ router.post('/user/signin',function(req,res,next){
                 return;
             }
             if(isMatch){
-                res.send({code:0,message:'密码正确'})
+                req.session.user=user;
+                res.send({code:0,message:'密码正确'});
             }else{
                 res.send({code:404,message:'密码错误！'});
                 return;
@@ -75,5 +89,10 @@ router.post('/user/signin',function(req,res,next){
         })
     })
 });
-
+//logout
+router.get('/logout',function(req,res,next){
+    delete req.session.user;
+    req.app.locals.user=null;
+    res.redirect('/');
+});
 module.exports = router;

@@ -51,8 +51,7 @@ $(function(){
                     if(res.code!==0){
                         alert(res.message);
                     }else{
-                        console.log(res.message);
-                        //location.reload();
+                        location.reload();
                     }
                 },
                 error:function(err){

@@ -8,17 +8,22 @@ var partial = require('express-partial');
 var mongoose=require('mongoose');
 var moment=require('moment');
 var session = require('express-session');
+var mongoStore=require('connect-mongo')(session);
+var flash = require('connect-flash');
+var dbUrl='mongodb://localhost/shuanghu';
 
 var routes = require('./routes/index');
 
 var app = express();
 
-mongoose.connect('mongodb://localhost/shuanghu');
+mongoose.connect(dbUrl);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 app.use(partial());
+app.use(flash());
+
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
@@ -26,6 +31,15 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(session({
+  secret:'shuanghu',
+  store:new mongoStore({
+    url:dbUrl,
+    collection:'sessions'
+  })
+}));
+app.locals.moment=moment;
+app.locals.user=null;
 
 
 app.use(routes);
