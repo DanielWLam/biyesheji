@@ -23,8 +23,7 @@ router.get('/', function(req, res, next) {
 router.post('/user/signup',function(req,res,next){
     var _user={
         name:req.body.name,
-        pass:req.body.password,
-        pass2:req.body.passwordAgain
+        password:req.body.password
     };
 
     User.find({
@@ -43,7 +42,6 @@ router.post('/user/signup',function(req,res,next){
                     console.log(err);
                     res.send({code:404,message:err});
                 }
-                console.log('新建用户');
                 res.send({code:0,message:'注册成功'});
             })
         }

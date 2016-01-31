@@ -30,7 +30,6 @@ UserSchema.pre('save', function(next) {
     } else {
         this.meta.updateAt = Date.now();
     }
-
     bcrypt.genSalt(SALT_WORK_FACTOR, function(err, salt) {
         if (err) {
             console.log(err);
