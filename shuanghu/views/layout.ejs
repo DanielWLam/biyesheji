@@ -22,15 +22,49 @@
           </div>
           <div class="collapse navbar-collapse" id="header-navbar">
             <ul class="nav navbar-nav">
+              <% if (currentPage == 0) {%>            
               <li class="active">
-                <a href="#">首页</a>
+              <% }else { %>
+              <li>
+              <% } %>
+                <a data-index="0" href="/">首页</a>
               </li>
-              <li><a href="/bedroom">卧室</a></li>
-              <li><a href="#">客厅</a></li>
-              <li><a href="#">厨房</a></li>
-              <li><a href="#">餐厅</a></li>
-              <li><a href="#">儿童部</a></li>
-              <li><a href="#">纺织品</a></li>
+              <% if (currentPage == 1) {%>            
+              <li class="active">
+              <% }else { %>
+              <li>
+              <% } %>
+              <a data-index="1" href="/bedroom">卧室</a></li>
+              <% if (currentPage == 2) {%>            
+              <li class="active">
+              <% }else { %>
+              <li>
+              <% } %>
+              <a data-index="2" href="#">客厅</a></li>
+              <% if (currentPage == 3) {%>            
+              <li class="active">
+              <% }else { %>
+              <li>
+              <% } %>
+              <a data-index="3" href="#">厨房</a></li>
+              <% if (currentPage == 4) {%>            
+              <li class="active">
+              <% }else { %>
+              <li>
+              <% } %>
+              <a data-index="4" href="#">餐厅</a></li>
+              <% if (currentPage == 5) {%>            
+              <li class="active">
+              <% }else { %>
+              <li>
+              <% } %>
+              <a data-index="5" href="#">儿童部</a></li>
+              <% if (currentPage == 6) {%>            
+              <li class="active">
+              <% }else { %>
+              <li>
+              <% } %>
+              <a data-index="6" href="#">纺织品</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right" role="loginout">
               <% if (user) { %>

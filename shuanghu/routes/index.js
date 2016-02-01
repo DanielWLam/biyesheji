@@ -20,6 +20,7 @@ router.use(function(req,res,next){
 router.get('/', function(req, res, next) {    
     res.render('page/index', {
         title: '首页',
+        currentPage:0,
         photoList:[{
           picture_url:'/images/201622_hpsf01a_01_PH129300.jpg',
           caption:'孩童创意，献爱公益'
@@ -99,7 +100,8 @@ router.get('/logout',function(req,res,next){
 //bedroom
 router.get('/bedroom', function(req, res, next) {    
     res.render('page/bedroom', {
-        title: 'Bedroom'
+        title: 'Bedroom',
+        currentPage:1
     });
 });
 
