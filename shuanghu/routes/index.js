@@ -105,4 +105,19 @@ router.get('/bedroom', function(req, res, next) {
     });
 });
 
+//Product page
+router.get('/product/:id',function(req,res,next){
+    var p_id=req.params.id;
+    res.render('page/product',{
+        title:'Product Detail',
+        brand:'HEMNES 汉尼斯',
+        type_color:'床架, 黑褐色',
+        price:'1,549.00',
+        p_id:p_id,
+        info:'实木制成，它是一种结实耐用的天然材料。 床侧板含有床板高度调节设置，使您能够使用厚度不同的床垫。',
+        left:'12',
+        currentPage:-1
+    })
+});
+
 module.exports = router;
