@@ -19,6 +19,10 @@ var UserSchema = new mongoose.Schema({
             type: Date,
             default: Date.now()
         }
+    },
+    right:{
+        type:Number,
+        default:1   //1 is normal user, 0 is admin user
     }
 });
 

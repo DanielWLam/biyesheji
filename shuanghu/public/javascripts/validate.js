@@ -1,32 +1,48 @@
-$(function(){
-    $('#regBtn').click(function(e){
+$(function() {
+    $('#regBtn').click(function(e) {
         e.preventDefault();
-        var modal=$('#signupModal');
-        var name=modal.find('#signupName').val(),
-            password=modal.find('#signupPassword').val(),
-            passwordAgain=modal.find('#signupPasswordAgain').val();
+        var modal = $('#signupModal');
+        var name = modal.find('#signupName').val(),
+            password = modal.find('#signupPassword').val(),
+            passwordAgain = modal.find('#signupPasswordAgain').val();
 
-        if(inputNotEmpty($(this),'#signupModal')){
-            if(password!==passwordAgain){
+        if (inputNotEmpty($(this), '#signupModal')) {
+            if (password !== passwordAgain) {
                 alert('两次输入的密码不一致');
-            }else{
+            } else {
                 $.ajax({
-                    url:'/user/signup',
-                    type:'POST',
-                    data:{
-                        name:name,
-                        password:password,
-                        passwordAgain:passwordAgain
+                    url: '/user/signup',
+                    type: 'POST',
+                    data: {
+                        name: name,
+                        password: password,
+                        passwordAgain: passwordAgain
                     },
-                    success:function(res){
-                        if(res.code===0){
-                            location.reload();
-                            alert(res.message);
-                        }else{
+                    success: function(res) {
+                        if (res.code === 0) {
+                            $.ajax({
+                                url: '/user/signin',
+                                type: 'POST',
+                                data: {
+                                    name: name,
+                                    password: password
+                                },
+                                success: function(res) {
+                                    if (res.code !== 0) {
+                                        alert(res.message);
+                                    } else {
+                                        location.reload();
+                                    }
+                                },
+                                error: function(err) {
+                                    console.log(err);
+                                }
+                            })
+                        } else {
                             alert(res.message);
                         }
                     },
-                    error:function(err){
+                    error: function(err) {
                         console.log(err);
                     }
                 });
@@ -34,37 +50,37 @@ $(function(){
         }
     });
 
-    $('#loginBtn').click(function(e){
+    $('#loginBtn').click(function(e) {
         e.preventDefault();
-        var modal=$('#signinModal');
-        var name=modal.find('#signinName').val(),
-            password=modal.find('#signinPassword').val();
-        if(inputNotEmpty($(this),'#signinModal')){
+        var modal = $('#signinModal');
+        var name = modal.find('#signinName').val(),
+            password = modal.find('#signinPassword').val();
+        if (inputNotEmpty($(this), '#signinModal')) {
             $.ajax({
-                url:'/user/signin',
-                type:'POST',
-                data:{
-                    name:name,
-                    password:password
+                url: '/user/signin',
+                type: 'POST',
+                data: {
+                    name: name,
+                    password: password
                 },
-                success:function(res){
-                    if(res.code!==0){
+                success: function(res) {
+                    if (res.code !== 0) {
                         alert(res.message);
-                    }else{
+                    } else {
                         location.reload();
                     }
                 },
-                error:function(err){
+                error: function(err) {
                     console.log(err);
                 }
             })
         }
     });
 
-    function inputNotEmpty(c,p){
-        var input=$(c).closest(p).find('input');
-        for(var i=0;i<input.length;i++){
-            if(input[i].value==''){
+    function inputNotEmpty(c, p) {
+        var input = $(c).closest(p).find('input');
+        for (var i = 0; i < input.length; i++) {
+            if (input[i].value == '') {
                 alert('不能为空');
                 return false;
             }
