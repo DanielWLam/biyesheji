@@ -8,7 +8,8 @@ var partial = require('express-partial');
 var mongoose=require('mongoose');
 var moment=require('moment');
 var session = require('express-session');
-var mongoStore=require('connect-mongo')(session);
+// var mongoStore=require('connect-mongo')(session);
+var mongoStore=require('connect-mongo/es5')(session);
 var flash = require('connect-flash');
 var dbUrl='mongodb://localhost/shuanghu';
 
