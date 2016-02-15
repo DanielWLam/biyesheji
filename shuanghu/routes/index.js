@@ -130,7 +130,7 @@ router.get('/logout', function(req, res, next) {
 //bedroom
 router.get('/bedroom', function(req, res, next) {
     res.render('page/bedroom', {
-        title: 'Bedroom',
+        title: '卧室',
         currentPage: 1
     });
 });
@@ -159,7 +159,7 @@ router.get('/product/:id', function(req, res, next) {
     //     }
     // })
     res.render('page/product', {
-        title: 'Product Detail',
+        title: '商品详情',
         brand: 'HEMNES 汉尼斯',
         type_color: '床架, 黑褐色',
         price: '1,549.00',
@@ -175,7 +175,7 @@ router.get('/admin', function(req, res, next) {
     if (!req.session.user) {
         res.send({
             code: 404,
-            message: 'Please login'
+            message: '请登录'
         });
         return;
     } else {
@@ -199,14 +199,14 @@ router.get('/admin', function(req, res, next) {
                             });
                         }
                         res.render('admin/productlist', {
-                            title:'Manage',
+                            title:'商品管理',
                             products: products
                         })
                     })
                 } else {
                     res.send({
                         code: 404,
-                        message: 'unauthorize!'
+                        message: '未授权！'
                     });
                     return;
                 }
@@ -214,10 +214,9 @@ router.get('/admin', function(req, res, next) {
         })
     }
 });
-
+//添加商品和上传图片
 router.post('/admin/addProduct', function(req, res, next) {
     var _product = req.body;
-    console.log(_product);
 
     Product.find({
         id: _product.id
@@ -226,16 +225,15 @@ router.post('/admin/addProduct', function(req, res, next) {
             return res.send({
                 code: 404,
                 message: err
-            });;
+            });
         }
         if (product.length > 0) {
             return res.send({
                 code: 404,
-                message: 'id is already existing'
+                message: 'id 已经存在'
             });;
         }
         var product = new Product(_product);
-        console.log(product);
         product.save(function(err, result) {
             if (err) {
                 return res.send({
@@ -245,10 +243,13 @@ router.post('/admin/addProduct', function(req, res, next) {
             }
             return res.send({
                 code: 0,
-                message: 'Add successfully'
+                message: '添加成功'
             });
         })
     })
 });
+router.post('/admin/uploadImg',function(req,res,next){
+    console.log(req.files,'----------------------');
+})
 
 module.exports = router;
