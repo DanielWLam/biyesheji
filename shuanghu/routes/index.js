@@ -158,12 +158,13 @@ router.get('/product/:id', function(req, res, next) {
         if (result) {
             console.log(result);
             res.render('page/product', {
-                title: 'Product Detail',
+                title: '商品详情',
                 brand: result[0].name,
                 type_color: result[0].tag,
                 price: result[0].price,
                 p_id: p_id,
                 info: result[0].info,
+                pic:result[0].pic,
                 left: result[0].leftAmount,
                 currentPage: -1
             })
@@ -229,7 +230,6 @@ router.post('/admin/addProduct', upload.single('pic'), function(req, res, next) 
             });
         }
         if (product.length > 0) {
-            console.log(product,'++++++++++++++++');
             return res.send({
                 code: 404,
                 message: 'id 已经存在'
@@ -251,11 +251,10 @@ router.post('/admin/addProduct', upload.single('pic'), function(req, res, next) 
         }
     })
 });
-//gengxin chanpin
+//更新商品
 router.post('/admin/updateProduct',upload.single('pic'),function(req,res,next){
     var _product=req.body;
     _product.pic=req.file.originalname;
-    console.log(_product);
     Product.remove({id:_product.id},function(err,result){
         if(err){
             return res.send({
@@ -266,7 +265,7 @@ router.post('/admin/updateProduct',upload.single('pic'),function(req,res,next){
         if(result.result.n==0){
             return res.send({
                 code: 404,
-                message: 'meiyou zhege ID'
+                message: '没有这个ID'
             });
         }
         var product = new Product(_product);
@@ -280,14 +279,13 @@ router.post('/admin/updateProduct',upload.single('pic'),function(req,res,next){
                 
                 return res.send({
                     code: 0,
-                    message: 'xiugai成功'
+                    message: '修改成功！'
                 });
             })
     })
 })
 //delete shangpin
 router.post('/admin/deleteProduct',function(req,res,next){
-    console.log(req.body);
     var _id=req.body.id;
     Product.remove({id:_id},function(err,result){
         if(err){
@@ -298,7 +296,7 @@ router.post('/admin/deleteProduct',function(req,res,next){
         }
         return res.send({
             code:0,
-            message:'delete chenggong'
+            message:'删除成功！'
         })
     })
 })

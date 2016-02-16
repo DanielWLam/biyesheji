@@ -131,7 +131,7 @@ $(function() {
     $('.delBtn').click(function(e){
         var item=$(e.target).closest('tr');
         var itemId=item.find('.id').html();
-        if(confirm('que ding yao shanchu zhe tiao xinxi ?')){
+        if(confirm('确定要删除这件商品吗？')){
             $.ajax({
                 type:'POST',
                 url:'/admin/deleteProduct',
