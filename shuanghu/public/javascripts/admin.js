@@ -8,6 +8,7 @@ $(function() {
         product.name = form.find('#pName').val();
         product.price = form.find('#price').val();
         product.tag = form.find('#tag').val();
+        product.info=form.find('#info').val();
         product.pic = form.find('#pic').val();
         product.pic=product.pic.split('fakepath\\')[1];
         product.leftAmount = form.find('#leftAmount').val();
@@ -51,22 +52,22 @@ $(function() {
     });
     
     $('.ediBtn').click(function(e){
-        console.log(12)
-        var item=$(e.target).closest('.row');//.find('.id').html();
+        var item=$(e.target).closest('tr');//.find('.id').html();
         var modal=$('#editProductModal');
 
         var itemId=item.find('.id').html();
         var itemname=item.find('.name').html();
         var itemprice=item.find('.price').html();
         var itemtag=item.find('.tag').html();
+        var iteminfo=item.find('.info').html();
         var itempic=item.find('.pic').html();
         var itemleft=item.find('.leftAmount').html();
-        console.log(itempic)
         
         modal.find('#epID').val(itemId);
         modal.find('#epName').val(itemname);
         modal.find('#eprice').val(itemprice);
         modal.find('#etag').val(itemtag);
+        modal.find('#einfo').val(iteminfo);
         modal.find('#eleftAmount').val(itemleft);
     });
 
@@ -75,12 +76,18 @@ $(function() {
         var form = $(this).closest('form');
         var product = {};
         var canPost = true;
-        product.id = form.find('#pID').val();
-        product.name = form.find('#pName').val();
-        product.price = form.find('#price').val();
-        product.tag = form.find('#tag').val();
-        product.pic = form.find('#pic').val();
-        product.pic=product.pic.split('fakepath\\')[1];
+        product.id = form.find('#epID').val();
+        product.name = form.find('#epName').val();
+        product.price = form.find('#eprice').val();
+        product.tag = form.find('#etag').val();
+        product.info=form.find('#einfo').val();
+        product.pic = form.find('#epic').val();
+
+        if(product.pic){
+            product.pic=product.pic.split('fakepath\\')[1];
+        }else{
+            alert('pic can"t be empty!');
+        }
         product.leftAmount = form.find('#leftAmount').val();
         for (var i in product) {
             if (product[i] === '') {
@@ -99,9 +106,9 @@ $(function() {
             canPost = false;
         }
         if (canPost) {
-            var data=new FormData($('#addProductForm')[0]);
+            var data=new FormData($('#editProductForm')[0]);
             $.ajax({
-                url: '/admin/addProduct',
+                url: '/admin/updateProduct',
                 type: 'POST',
                 data: data,
                 processData:false,
@@ -120,4 +127,29 @@ $(function() {
             });
         }
     });
+
+    $('.delBtn').click(function(e){
+        var item=$(e.target).closest('tr');
+        var itemId=item.find('.id').html();
+        if(confirm('que ding yao shanchu zhe tiao xinxi ?')){
+            $.ajax({
+                type:'POST',
+                url:'/admin/deleteProduct',
+                data:{
+                    id:itemId
+                },
+                success:function(res){
+                    if(res.code===0){
+                        alert(res.message);
+                        location.reload();
+                    }else{
+                        alert(res.message);
+                    }
+                },
+                error:function(err){
+                    alert(err);
+                }
+            })
+        }
+    })
 });

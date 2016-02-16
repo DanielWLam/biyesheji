@@ -9,6 +9,7 @@
                         <th>名字</th>
                         <th>价格</th>
                         <th>Tag</th>
+                        <th>Info</th>
                         <th>图片</th>
                         <th>剩余</th>
                         <th>操作</th>
@@ -20,6 +21,7 @@
                         <td class="name"><%= p.name %></td>
                         <td class="price"><%= p.price %></td>
                         <td class="tag"><%= p.tag %></td>
+                        <td class="info"><%= p.info %></td>
                         <td class="pic"><%= p.pic %></td>
                         <td class="leftAmount"><%= p.leftAmount %></td>
                         <td style="display:flex">
@@ -61,6 +63,10 @@
                             <input type="text" id="tag" name="tag" autocomplete="off" class="form-control" placeholder="以逗号分隔">
                         </div>
                         <div class="form-group">
+                            <label for="info">Info</label>
+                            <input type="text" id="info" name="info" autocomplete="off" class="form-control">
+                        </div>
+                        <div class="form-group">
                             <label for="pic">图片</label>
                             <input type="file" id="pic" name="pic" accept="image/*">
                         </div>
@@ -80,7 +86,7 @@
     <div class="modal fade" id="editProductModal">
         <div class="modal-dialog">
             <div class="modal-content">
-                <form id="addProductForm" action="/admin/addProduct" method="post" enctype="multipart/form-data">
+                <form id="editProductForm" action="/admin/addProduct" method="post" enctype="multipart/form-data">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
@@ -103,6 +109,10 @@
                         <div class="form-group">
                             <label for="tag">Tag</label>
                             <input type="text" id="etag" name="tag" autocomplete="off" class="form-control" placeholder="以逗号分隔">
+                        </div>
+                        <div class="form-group">
+                            <label for="info">Info</label>
+                            <input type="text" id="einfo" name="info" autocomplete="off" class="form-control">
                         </div>
                         <div class="form-group">
                             <label for="pic">图片</label>

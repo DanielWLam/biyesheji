@@ -148,35 +148,26 @@ router.get('/bedroom', function(req, res, next) {
 //Product page
 router.get('/product/:id', function(req, res, next) {
     var p_id = req.params.id;
-    // Product.findLeft(p_id, function(err, result) {
-    //     if (err) {
-    //         return res.send({
-    //             code: 404,
-    //             message: err
-    //         });
-    //     }
-    //     if (result) {
-    //         res.render('page/product', {
-    //             title: 'Product Detail',
-    //             brand: 'HEMNES 汉尼斯',
-    //             type_color: '床架, 黑褐色',
-    //             price: '1,549.00',
-    //             p_id: p_id,
-    //             info: '实木制成，它是一种结实耐用的天然材料。 床侧板含有床板高度调节设置，使您能够使用厚度不同的床垫。',
-    //             left: result,
-    //             currentPage: -1
-    //         })
-    //     }
-    // })
-    res.render('page/product', {
-        title: '商品详情',
-        brand: 'HEMNES 汉尼斯',
-        type_color: '床架, 黑褐色',
-        price: '1,549.00',
-        p_id: p_id,
-        info: '实木制成，它是一种结实耐用的天然材料。 床侧板含有床板高度调节设置，使您能够使用厚度不同的床垫。',
-        left: 12,
-        currentPage: -1
+    Product.findById(p_id, function(err, result) {
+        if (err) {
+            return res.send({
+                code: 404,
+                message: err
+            });
+        }
+        if (result) {
+            console.log(result);
+            res.render('page/product', {
+                title: 'Product Detail',
+                brand: result[0].name,
+                type_color: result[0].tag,
+                price: result[0].price,
+                p_id: p_id,
+                info: result[0].info,
+                left: result[0].leftAmount,
+                currentPage: -1
+            })
+        }
     })
 });
 
@@ -228,8 +219,6 @@ router.get('/admin', function(req, res, next) {
 router.post('/admin/addProduct', upload.single('pic'), function(req, res, next) {
     var _product = req.body;
     _product.pic=req.file.originalname;
-    // console.log(_product,req.file);
-    // return;
     Product.find({
         id: _product.id
     }, function(err, product) {
@@ -252,7 +241,7 @@ router.post('/admin/addProduct', upload.single('pic'), function(req, res, next) 
                     return res.send({
                         code: 404,
                         message: err
-                    });;
+                    });
                 }
                 return res.send({
                     code: 0,
@@ -262,6 +251,57 @@ router.post('/admin/addProduct', upload.single('pic'), function(req, res, next) 
         }
     })
 });
+//gengxin chanpin
+router.post('/admin/updateProduct',upload.single('pic'),function(req,res,next){
+    var _product=req.body;
+    _product.pic=req.file.originalname;
+    console.log(_product);
+    Product.remove({id:_product.id},function(err,result){
+        if(err){
+            return res.send({
+                code: 404,
+                message: err
+            });
+        }
+        if(result.result.n==0){
+            return res.send({
+                code: 404,
+                message: 'meiyou zhege ID'
+            });
+        }
+        var product = new Product(_product);
+            product.save(function(err, result) {
+                if (err) {
+                    return res.send({
+                        code: 404,
+                        message: err
+                    });
+                }
+                
+                return res.send({
+                    code: 0,
+                    message: 'xiugai成功'
+                });
+            })
+    })
+})
+//delete shangpin
+router.post('/admin/deleteProduct',function(req,res,next){
+    console.log(req.body);
+    var _id=req.body.id;
+    Product.remove({id:_id},function(err,result){
+        if(err){
+            return res.send({
+                code: 404,
+                message: err
+            });
+        }
+        return res.send({
+            code:0,
+            message:'delete chenggong'
+        })
+    })
+})
 
 
 module.exports = router;
