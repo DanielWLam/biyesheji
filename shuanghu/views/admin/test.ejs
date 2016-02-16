@@ -1,0 +1,10 @@
+<% include ./adminHead.ejs %>
+    <div class="container">
+        <form id="test" action="/test" method="post" enctype="multipart/form-data" >
+            <input type="text" name='id'>
+            <input type="file" id='files' name="avatar">
+            <input type="submit" id='subBtn' value="upload">
+        </form>
+    </div>
+
+<% include ./adminFoot.ejs %>

@@ -3,6 +3,16 @@ var router = express.Router();
 var _ = require('underscore');
 var User = require('../models/user');
 var Product = require('../models/product');
+var multer=require('multer');
+var storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, './public/images/upload')
+  },
+  filename: function (req, file, cb) {
+    cb(null, file.originalname)
+  }
+})
+var upload=multer({storage:storage});
 
 //pre handle user
 router.use(function(req, res, next) {
@@ -215,9 +225,11 @@ router.get('/admin', function(req, res, next) {
     }
 });
 //添加商品和上传图片
-router.post('/admin/addProduct', function(req, res, next) {
+router.post('/admin/addProduct', upload.single('pic'), function(req, res, next) {
     var _product = req.body;
-
+    _product.pic=req.file.originalname;
+    // console.log(_product,req.file);
+    // return;
     Product.find({
         id: _product.id
     }, function(err, product) {
@@ -228,28 +240,28 @@ router.post('/admin/addProduct', function(req, res, next) {
             });
         }
         if (product.length > 0) {
+            console.log(product,'++++++++++++++++');
             return res.send({
                 code: 404,
                 message: 'id 已经存在'
-            });;
-        }
-        var product = new Product(_product);
-        product.save(function(err, result) {
-            if (err) {
-                return res.send({
-                    code: 404,
-                    message: err
-                });;
-            }
-            return res.send({
-                code: 0,
-                message: '添加成功'
             });
-        })
+        }else{
+            var product = new Product(_product);
+            product.save(function(err, result) {
+                if (err) {
+                    return res.send({
+                        code: 404,
+                        message: err
+                    });;
+                }
+                return res.send({
+                    code: 0,
+                    message: '添加成功'
+                });
+            })
+        }
     })
 });
-router.post('/admin/uploadImg',function(req,res,next){
-    console.log(req.files,'----------------------');
-})
+
 
 module.exports = router;

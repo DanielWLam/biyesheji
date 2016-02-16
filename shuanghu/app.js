@@ -11,7 +11,6 @@ var session = require('express-session');
 // var mongoStore=require('connect-mongo')(session);
 var mongoStore=require('connect-mongo/es5')(session);
 var flash = require('connect-flash');
-var multer=require('multer');
 var dbUrl='mongodb://localhost/shuanghu';
 
 var routes = require('./routes/index');
@@ -40,7 +39,6 @@ app.use(session({
     collection:'sessions'
   })
 }));
-app.use(multer({dest:'./uploads/'}));
 
 app.locals.moment=moment;
 app.locals.user=null;
