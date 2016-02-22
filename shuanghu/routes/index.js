@@ -3,6 +3,7 @@ var router = express.Router();
 var _ = require('underscore');
 var User = require('../models/user');
 var Product = require('../models/product');
+var Cart=require('../models/cart');
 var multer=require('multer');
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -130,14 +131,14 @@ router.post('/user/signin', function(req, res, next) {
         })
     })
 });
-//logout
+//登出
 router.get('/logout', function(req, res, next) {
     delete req.session.user;
     req.app.locals.user = null;
     res.redirect('/');
 });
 
-//bedroom
+//卧室
 router.get('/bedroom', function(req, res, next) {
     res.render('page/bedroom', {
         title: '卧室',
@@ -145,7 +146,7 @@ router.get('/bedroom', function(req, res, next) {
     });
 });
 
-//Product page
+//产品页面
 router.get('/product/:id', function(req, res, next) {
     var p_id = req.params.id;
     Product.findById(p_id, function(err, result) {
@@ -156,7 +157,6 @@ router.get('/product/:id', function(req, res, next) {
             });
         }
         if (result) {
-            console.log(result);
             res.render('page/product', {
                 title: '商品详情',
                 brand: result[0].name,
@@ -172,7 +172,64 @@ router.get('/product/:id', function(req, res, next) {
     })
 });
 
-//Administrator
+router.post('/addToCar', function(req, res, next) {
+    var data = req.body;
+    var user=req.session.user;
+    var _cart={
+        username:user.name,
+        productid:data.pid
+    }
+    var left=(~~data.left) - (~~data.amount);
+    var cart = new Cart(_cart);
+    
+    Cart.find({username:user.name,productid:data.pid},function(err,result){
+        if(err){return res.send({code: 404,message: err});}
+        if(result.length>0){
+            Cart.remove({username:user.name,productid:data.pid},function(err,result){
+                if(err){return res.send({code: 404,message: err});}
+                cart.save(function(err, result) {
+                    if (err) {
+                        return res.send({
+                            code: 404,
+                            message: err
+                        });
+                    }
+                    Product.find({id:data.pid},function(err,result){
+                        if(err){return res.send({code: 404,message: err});}
+                        Product.update({id:data.pid},{$set:{leftAmount:left}},function(err,result){
+                            if(err){return res.send({code: 404,message: err});}
+                            return res.send({
+                                code: 0,
+                                message: '已成功添加到购物车'
+                            });
+                        })
+                    })
+                });
+            });
+        }else{
+            cart.save(function(err, result) {
+                if (err) {
+                    return res.send({
+                        code: 404,
+                        message: err
+                    });
+                }
+                Product.find({id:data.pid},function(err,result){
+                    if(err){return res.send({code: 404,message: err});}
+                    Product.update({id:data.pid},{$set:{leftAmount:left}},function(err,result){
+                        if(err){return res.send({code: 404,message: err});}
+                        return res.send({
+                            code: 0,
+                            message: '已成功添加到购物车'
+                        });
+                    })
+                })
+            });
+        }
+    })
+});
+
+//管理员相关
 router.get('/admin', function(req, res, next) {
     if (!req.session.user) {
         res.send({
@@ -284,7 +341,7 @@ router.post('/admin/updateProduct',upload.single('pic'),function(req,res,next){
             })
     })
 })
-//delete shangpin
+//删除商品
 router.post('/admin/deleteProduct',function(req,res,next){
     var _id=req.body.id;
     Product.remove({id:_id},function(err,result){
@@ -300,6 +357,7 @@ router.post('/admin/deleteProduct',function(req,res,next){
         })
     })
 })
+
 
 
 module.exports = router;
