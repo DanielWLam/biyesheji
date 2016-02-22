@@ -19,7 +19,7 @@ $(function() {
         success: function(res) {
           if (res.code === 0) {
             $('#productLeft').val(~~left - ~~amount);
-            console.log(res.message);
+            alert(res.message);
           } else {
             alert(res.message);
           }

@@ -3,9 +3,7 @@ var mongoose = require('mongoose');
 var CartSchema = new mongoose.Schema({
     username: {type:String},
     productid: {type:String},
-    amount:{type:Number},
-    price:{type:Number},
-    total:{type:Number}
+    amount:{type:Number}
 });
 
 CartSchema.mothods = {

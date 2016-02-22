@@ -1,0 +1,45 @@
+<% include ../layout.ejs %>
+<div class="container" style="min-height:768px;margin-top:100px;">
+    <% if(carts.length>0){ %>
+    <table class="table table-bordered table-hover">
+        <tr>
+            <th>
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox">Check All
+                    </label>
+                </div>
+            </th>
+            <th>name</th>
+            <th>price</th>
+            <th>amount</th>
+            <th>total</th>
+            <th>Action</th>
+        </tr>
+        <% carts.forEach(function(c,index){%>
+        <tr>
+            <td>
+                <div class="checkbox" style="display:inline-block;">
+                    <label>
+                        <input type="checkbox">
+                    </label>
+                </div>
+                <div class="img" style="display:inline-block;height:50px;width:50px;">
+                    <img class="img-responsive" style="display:inline-block;" src="/images/upload/<%= c.pic %>" alt="">
+                </div>
+            </td>
+            <td><%= c.name %></td>
+            <td><%= c.price %></td>
+            <td><input type="number" value="<%= c.amount %>"></td>
+            <td><%= c.price*c.amount %></td>
+            <td>
+                <span class="text-danger delBtn" style="flex:1;cursor:pointer;">删除</span>
+            </td>
+        </tr>
+        <% }) %>
+        <% } else{ %>
+            <p>gou wu che kong kong ru ye!</p>
+        <% } %>
+    </table>
+</div>
+<% include ../includes/footer.ejs %>

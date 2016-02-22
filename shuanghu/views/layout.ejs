@@ -68,7 +68,7 @@
             </ul>
             <ul class="nav navbar-nav navbar-right" role="loginout">
               <% if (user) { %>
-                <li><a class="navbar-link">Welcome <span style="color:#eee;"><%= user.name %></span> !</a></li>
+                <li><a class="navbar-link" style="display:inline-block;">Welcome <a href="/cart" style="color:#eee;display:inline-block;padding-left:0px;"><%= user.name %></a> !</a></li>
                 <span>&nbsp;|&nbsp;</span>
                 <li><a href="/logout" class="navbar-link" id="logoutBtn">Logout</a></li>
               <% } else { %>

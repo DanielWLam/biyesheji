@@ -171,13 +171,14 @@ router.get('/product/:id', function(req, res, next) {
         }
     })
 });
-
+//Add to Cart
 router.post('/addToCar', function(req, res, next) {
     var data = req.body;
     var user=req.session.user;
     var _cart={
         username:user.name,
-        productid:data.pid
+        productid:data.pid,
+        amount:data.amount
     }
     var left=(~~data.left) - (~~data.amount);
     var cart = new Cart(_cart);
@@ -227,6 +228,45 @@ router.post('/addToCar', function(req, res, next) {
             });
         }
     })
+});
+//display cart
+router.get('/cart',function(req,res,next){
+    var user=req.session.user;
+    Cart.find({username:user.name},function(err,result){
+        if(err){return res.send({code: 404,message: err});}
+        var cart_data=result;
+        var carts=[];
+        var count=0;
+        if(result.length>0){
+            cart_data.forEach(function(item,i,array){
+            Product.find({id:item.productid},function(err,result){
+                if(err){return res.send({code: 404,message: err});}
+                    carts.push({
+                        name:result[0].name,
+                        price:result[0].price,
+                        amount:item.amount,
+                        pic:result[0].pic
+                    })
+                    count++;
+                    if(count===array.length){
+                        res.render('page/cart',{
+                            title:'gouwuche',
+                            currentPage:-1,
+                            carts:carts
+                        })
+                        return;
+                    }
+                })
+            })
+        }else{
+            res.render('page/cart',{
+                        title:'gouwuche',
+                        currentPage:-1,
+                        carts:carts
+                    })
+            return;
+        }
+    })    
 });
 
 //管理员相关
