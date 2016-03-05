@@ -268,6 +268,27 @@ router.get('/cart',function(req,res,next){
         }
     })    
 });
+//搜索商品
+router.get('/search/:value',function(req,res,next){
+    var value=req.params.value+'';
+    Product.find({name:{$regex:value}},function(err,result){
+        if(err){
+            res.send({
+                code: 404,
+                message: err
+            });
+            return;
+        }
+        var rows=Math.ceil(result.length/4);
+        res.render('page/searchResult',{
+            title:'搜索结果',
+            products:result,
+            rows:rows,
+            currentPage:-1
+        })
+        return;
+    })
+});
 
 //管理员相关
 router.get('/admin', function(req, res, next) {
