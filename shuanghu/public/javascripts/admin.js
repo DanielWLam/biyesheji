@@ -63,10 +63,12 @@ $(function() {
         var itempic=item.find('.pic').html();
         var itemleft=item.find('.leftAmount').html();
         
+        console.log(itempic);
         modal.find('#epID').val(itemId);
         modal.find('#epName').val(itemname);
         modal.find('#eprice').val(itemprice);
         modal.find('#etag').val(itemtag);
+        modal.find('#epicName').text('dangqiantupian:'+itempic);
         modal.find('#einfo').val(iteminfo);
         modal.find('#eleftAmount').val(itemleft);
     });
@@ -81,19 +83,22 @@ $(function() {
         product.price = form.find('#eprice').val();
         product.tag = form.find('#etag').val();
         product.info=form.find('#einfo').val();
-        product.pic = form.find('#epic').val();
+        product.pic = form.find('#epicName').text();
+        product.inputPic=form.find('#epic').val();
+        product.leftAmount=form.find('#eleftAmount').val();
 
         if(product.pic){
-            product.pic=product.pic.split('fakepath\\')[1];
+            product.pic=product.pic.split('dangqiantupian:')[1];
         }else{
             alert('pic can"t be empty!');
         }
-        product.leftAmount = form.find('#leftAmount').val();
         for (var i in product) {
             if (product[i] === '') {
-                alert(i + ' 不能为空！');
-                canPost = false;
-                break;
+                if(i!='inputPic'){
+                    alert(i + ' 不能为空！');
+                    canPost = false;
+                    break;
+                }
             }
         }
 
@@ -106,9 +111,11 @@ $(function() {
             canPost = false;
         }
         if (canPost) {
-            var data=new FormData($('#editProductForm')[0]);
-            $.ajax({
-                url: '/admin/updateProduct',
+            if(product.inputPic!==''){
+                var url='/admin/updateProduct';
+                var data=new FormData($('#editProductForm')[0]);
+                $.ajax({
+                url: url,
                 type: 'POST',
                 data: data,
                 processData:false,
@@ -125,6 +132,34 @@ $(function() {
                     console.log(err);
                 }
             });
+            }else{
+                var url='/admin/updateProductPicNotChange';
+                var data={
+                    id:product.id,
+                    name:product.name,
+                    price:product.price,
+                    tag:product.tag,
+                    info:product.info,
+                    pic:product.pic,
+                    leftAmount:product.leftAmount
+                };
+                $.ajax({
+                    url: url,
+                    type: 'POST',
+                    data: data,
+                    success: function(res) {
+                        if(res.code===0){
+                            alert(res.message);
+                            location.reload();
+                        }else{
+                            alert(res.message);
+                        }
+                    },
+                    error: function(err) {
+                        console.log(err);
+                    }
+                });
+            }            
         }
     });
 

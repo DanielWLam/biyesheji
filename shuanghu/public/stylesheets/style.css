@@ -52,3 +52,11 @@ a {
   display:inline-block;
   margin-right:60px;
 }
+.img-box{
+  width:163px;
+  height:163px;
+  line-height: 163px;
+}
+.img-responsive{
+  display:inline-block;
+}

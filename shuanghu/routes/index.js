@@ -369,7 +369,7 @@ router.post('/admin/addProduct', upload.single('pic'), function(req, res, next) 
         }
     })
 });
-//更新商品
+//更新商品,with pic
 router.post('/admin/updateProduct',upload.single('pic'),function(req,res,next){
     var _product=req.body;
     _product.pic=req.file.originalname;
@@ -400,6 +400,40 @@ router.post('/admin/updateProduct',upload.single('pic'),function(req,res,next){
                     message: '修改成功！'
                 });
             })
+    })
+})
+//更新商品,withOUT pic
+router.post('/admin/updateProductPicNotChange',function(req,res,next){
+    var _product=req.body;
+    var id=_product.id;
+    console.log(_product);
+    Product.find({id:id},function(err,result){
+        if(err){
+            return res.send({
+                code: 404,
+                message: err
+            });
+        }
+        console.log(result);
+        if(result.length==0){
+            return res.send({
+                code: 404,
+                message: '没有这个ID'
+            });
+        }
+        var _id=result._id;
+        Product.findOneAndUpdate({id:_product.id},_product,function(err,result){
+            if (err) {
+                return res.send({
+                    code: 404,
+                    message: err
+                });
+            }
+            return res.send({
+                code: 0,
+                message: '修改成功！'
+            });
+        })
     })
 })
 //删除商品
