@@ -145,6 +145,13 @@ router.get('/bedroom', function(req, res, next) {
         currentPage: 1
     });
 });
+//客厅
+router.get('/livingroom', function(req, res, next) {
+    res.render('page/livingroom', {
+        title: '客厅',
+        currentPage: 2
+    });
+});
 
 //产品页面
 router.get('/product/:id', function(req, res, next) {
@@ -182,7 +189,7 @@ router.post('/addToCar', function(req, res, next) {
     }
     var left=(~~data.left) - (~~data.amount);
     var cart = new Cart(_cart);
-    
+
     Cart.find({username:user.name,productid:data.pid},function(err,result){
         if(err){return res.send({code: 404,message: err});}
         if(result.length>0){
@@ -266,7 +273,7 @@ router.get('/cart',function(req,res,next){
                     })
             return;
         }
-    })    
+    })
 });
 //搜索商品
 router.get('/search/:value',function(req,res,next){
@@ -394,7 +401,7 @@ router.post('/admin/updateProduct',upload.single('pic'),function(req,res,next){
                         message: err
                     });
                 }
-                
+
                 return res.send({
                     code: 0,
                     message: '修改成功！'
