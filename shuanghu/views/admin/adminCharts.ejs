@@ -1,0 +1,28 @@
+<% include ./adminHead.ejs %>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-2">
+                <ul class="nav nav-pills nav-stacked">
+                  <% if (currentTab == 0) {%>  
+                  <li class="active" role="presentation">
+                  <% } else { %>
+                  <li role="presentation">
+                  <% } %>
+                  <a href="admin">商品管理</a>
+                  </li>
+                  <% if (currentTab == 1) {%>  
+                  <li class="active" role="presentation">
+                  <% } else { %>
+                  <li role="presentation">
+                  <% } %>
+                  <a href="tongji">统计信息</a>
+                  </li>
+                </ul>
+            </div>
+            <div class="col-md-10">
+                <input type="button" class="btn btn-success hotSelling" value="热销商品">
+                <div id="wrap" style="width:600px;height:600px;margin:10px auto;"></div>
+            </div>
+        </div>
+    </div>
+<% include ./adminFoot.ejs %>

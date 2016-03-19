@@ -325,8 +325,9 @@ router.get('/admin', function(req, res, next) {
                                 message: err
                             });
                         }
-                        res.render('admin/productlist', {
+                        res.render('admin/adminIndex', {
                             title:'商品管理',
+                            currentTab:0,
                             products: products
                         })
                     })
@@ -341,6 +342,93 @@ router.get('/admin', function(req, res, next) {
         })
     }
 });
+router.get('/tongji',function(req,res,next){
+    if (!req.session.user) {
+        res.send({
+            code: 404,
+            message: '请登录'
+        });
+        return;
+    } else {
+        User.findOne({
+            name: req.session.user.name
+        }, function(err, result) {
+            if (err) {
+                res.send({
+                    code: 404,
+                    message: err
+                });
+                return;
+            }
+            if (result) {
+                if (result.right === 0) { //0 is admin user
+                    res.render('admin/adminCharts',{
+                        title:'统计信息',
+                        currentTab:1
+                    })
+                } else {
+                    res.send({
+                        code: 404,
+                        message: '未授权！'
+                    });
+                    return;
+                }
+            }
+        })
+    }
+})
+router.get('/charts',function(req,res,next){
+    if (!req.session.user) {
+        res.send({
+            code: 404,
+            message: '请登录'
+        });
+        return;
+    } else {
+        User.findOne({
+            name: req.session.user.name
+        }, function(err, result) {
+            if (err) {
+                res.send({
+                    code: 404,
+                    message: err
+                });
+                return;
+            }
+            if (result) {
+                if (result.right === 0) { //0 is admin user
+                    Product.find().sort({"id":1}).exec(function(err, products) {
+                        if (err) {
+                            return res.send({
+                                code: 404,
+                                message: err
+                            });
+                        }
+                        
+                        var sellsData=[];
+                        products.forEach(function(item,i){
+                            var obj={};
+                            obj.name=item.name,
+                            obj.sold=~~item.totalAmount-~~item.leftAmount
+                            sellsData.push(obj);
+                        })
+                        res.send({
+                            title:'统计信息',
+                            currentTab:1,
+                            sellsData: sellsData
+                        })
+                    })
+                } else {
+                    res.send({
+                        code: 404,
+                        message: '未授权！'
+                    });
+                    return;
+                }
+            }
+        })
+    }
+})
 //添加商品和上传图片
 router.post('/admin/addProduct', upload.single('pic'), function(req, res, next) {
     var _product = req.body;
@@ -413,7 +501,6 @@ router.post('/admin/updateProduct',upload.single('pic'),function(req,res,next){
 router.post('/admin/updateProductPicNotChange',function(req,res,next){
     var _product=req.body;
     var id=_product.id;
-    console.log(_product);
     Product.find({id:id},function(err,result){
         if(err){
             return res.send({
@@ -421,7 +508,6 @@ router.post('/admin/updateProductPicNotChange',function(req,res,next){
                 message: err
             });
         }
-        console.log(result);
         if(result.length==0){
             return res.send({
                 code: 404,

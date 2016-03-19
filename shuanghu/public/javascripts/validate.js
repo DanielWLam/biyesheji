@@ -7,8 +7,10 @@ $(function() {
             passwordAgain = modal.find('#signupPasswordAgain').val();
 
         if (inputNotEmpty($(this), '#signupModal')) {
-            if (password !== passwordAgain) {
-                alert('两次输入的密码不一致');
+            if(password.length<3){
+                alert('密码不能少于3位！')
+            }else if (password !== passwordAgain) {
+                alert('两次输入的密码不一致！');
             } else {
                 $.ajax({
                     url: '/user/signup',

@@ -11,6 +11,7 @@ $(function() {
         product.info=form.find('#info').val();
         product.pic = form.find('#pic').val();
         product.pic=product.pic.split('fakepath\\')[1];
+        product.totalAmount=form.find('#totalAmount').val();
         product.leftAmount = form.find('#leftAmount').val();
         for (var i in product) {
             if (product[i] === '') {
@@ -26,6 +27,10 @@ $(function() {
         }
         if (typeof(product.leftAmount - 0) !== 'number') {
             alert('剩余量必须是数字');
+            canPost = false;
+        }
+        if(~~product.leftAmount>~~product.totalAmount){
+            alert('剩余量不能超过总量！');
             canPost = false;
         }
         if (canPost) {
@@ -61,6 +66,7 @@ $(function() {
         var itemtag=item.find('.tag').html();
         var iteminfo=item.find('.info').html();
         var itempic=item.find('.pic').html();
+        var itemtotal=item.find('.totalAmount').html();
         var itemleft=item.find('.leftAmount').html();
         
         console.log(itempic);
@@ -70,6 +76,7 @@ $(function() {
         modal.find('#etag').val(itemtag);
         modal.find('#epicName').text('dangqiantupian:'+itempic);
         modal.find('#einfo').val(iteminfo);
+        modal.find('#etotalAmount').val(itemtotal);
         modal.find('#eleftAmount').val(itemleft);
     });
 
@@ -85,6 +92,7 @@ $(function() {
         product.info=form.find('#einfo').val();
         product.pic = form.find('#epicName').text();
         product.inputPic=form.find('#epic').val();
+        product.totalAmount=form.find('#etotalAmount').val();
         product.leftAmount=form.find('#eleftAmount').val();
 
         if(product.pic){
@@ -108,6 +116,10 @@ $(function() {
         }
         if (typeof(product.leftAmount - 0) !== 'number') {
             alert('剩余量必须是数字');
+            canPost = false;
+        }
+        if(~~product.leftAmount>~~product.totalAmount){
+            alert('剩余量不能超过总量！');
             canPost = false;
         }
         if (canPost) {
@@ -141,6 +153,7 @@ $(function() {
                     tag:product.tag,
                     info:product.info,
                     pic:product.pic,
+                    totalAmount:product.totalAmount,
                     leftAmount:product.leftAmount
                 };
                 $.ajax({
@@ -186,5 +199,57 @@ $(function() {
                 }
             })
         }
+    })
+
+    $('.hotSelling').click(function(){
+        var myChart=echarts.init($('#wrap')[0]);
+        $.ajax({
+            type:'GET',
+            url:'charts',
+            success:function(res){
+                var result=res.sellsData;
+                var x=[];
+                var seriesData=[];
+                result.forEach(function(item,i){
+                    x.push(item.name);
+                })
+                result.forEach(function(item,i){
+                    seriesData.push(item.sold);
+                })
+                var option = {
+                    title: {
+                        text: '热销商品',
+                        top:'bottom',
+                        left:'center'
+                    },
+                    tooltip: {},
+                    legend: {
+                        data:['销量']
+                    },
+                    xAxis: {
+                        data: x
+                    },
+                    yAxis: {
+                        name:'件数',
+                        type:'value'
+                    },
+                    series: [{
+                        name: '销量',
+                        type: 'bar',
+                        data: seriesData,
+                        itemStyle:{
+                            normal:{
+                                lable:{show:true,position:'top'},
+                                width:1
+                            }
+                        }
+                    }]
+                };
+                myChart.setOption(option);
+            },
+            error:function(err){
+                alert(err);
+            }
+        })
     })
 });

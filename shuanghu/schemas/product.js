@@ -7,6 +7,7 @@ var ProductSchema = new mongoose.Schema({
     tag: {type:String},
     info:{type:String},
     pic: {type:String},
+    totalAmount:{type:String},
     leftAmount: {type:String}
 });
 
