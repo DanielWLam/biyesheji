@@ -210,12 +210,10 @@ $(function() {
                 var result=res.sellsData;
                 var x=[];
                 var seriesData=[];
-                result.forEach(function(item,i){
-                    x.push(item.name);
-                })
-                result.forEach(function(item,i){
-                    seriesData.push(item.sold);
-                })
+                for(var i=0;i<5;i++){
+                    x.push(result[i].name);
+                    seriesData.push(result[i].sold);
+                }
                 var option = {
                     title: {
                         text: '热销商品',

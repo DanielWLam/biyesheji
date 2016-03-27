@@ -412,6 +412,15 @@ router.get('/charts',function(req,res,next){
                             obj.sold=~~item.totalAmount-~~item.leftAmount
                             sellsData.push(obj);
                         })
+                        sellsData.sort(function(obj1,obj2){
+                            if(obj1.sold>obj2.sold){
+                                return -1;
+                            }else if(obj1.sold<obj2.sold){
+                                return 1;
+                            }else{
+                                return 0;
+                            }
+                        })
                         res.send({
                             title:'统计信息',
                             currentTab:1,
